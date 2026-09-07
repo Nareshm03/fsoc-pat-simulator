@@ -1,0 +1,385 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0a0a0a;
+}
+
+.header {
+  background: #1a1a1a;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00ff88;
+  margin: 0;
+}
+
+.connectionStatus {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.connectionStatus.connected {
+  background: #00ff8822;
+  color: #00ff88;
+}
+
+.connectionStatus.disconnected {
+  background: #ff444422;
+  color: #ff4444;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.leftPanel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.cameraView {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cameraFrame {
+  flex: 1;
+  position: relative;
+  background: #000;
+  min-height: 400px;
+  overflow: hidden;
+}
+
+.cameraImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.noStream {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  z-index: 1;
+}
+
+.detectionMarker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00ff88;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+  animation: pulse 1s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.errorVector {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.crosshairH,
+.crosshairV {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.crosshairH {
+  width: 40px;
+  height: 2px;
+  left: -20px;
+  top: 0;
+}
+
+.crosshairV {
+  width: 2px;
+  height: 40px;
+  left: 0;
+  top: -20px;
+}
+
+.cameraLabel {
+  padding: 0.5rem 1rem;
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  font-size: 0.875rem;
+  color: #888;
+  text-align: center;
+}
+
+.rightPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.statusCard {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.statusCard h2 {
+  font-size: 0.875rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stateBadge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.stateBadge.locked {
+  background: #00ff8844;
+  color: #00ff88;
+}
+
+.stateBadge.fine_track {
+  background: #00ff8844;
+  color: #00ff88;
+}
+
+.stateBadge.acquire {
+  background: #ffaa0044;
+  color: #ffaa00;
+}
+
+.stateBadge.search {
+  background: #4488ff44;
+  color: #4488ff;
+}
+
+.stateBadge.tracking {
+  background: #ffaa0044;
+  color: #ffaa00;
+}
+
+.stateBadge.reacquire {
+  background: #ff884444;
+  color: #ff8844;
+}
+
+.stateBadge.running {
+  background: #00ff8844;
+  color: #00ff88;
+}
+
+.stateBadge.paused {
+  background: #ffaa0044;
+  color: #ffaa00;
+}
+
+.stateBadge.idle {
+  background: #88888844;
+  color: #888;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  flex: 1;
+}
+
+.metric {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metricLabel {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metricValue {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  font-family: 'Courier New', monospace;
+}
+
+.linkStatus {
+  color: #00ff88;
+}
+
+.controlPanel {
+  background: #1a1a1a;
+  border-top: 2px solid #333;
+  padding: 1.5rem 2rem;
+}
+
+.sliderGroup {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.sliderGroup label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.sliderGroup input[type="range"] {
+  width: 100%;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.sliderGroup input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #00ff88;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.sliderGroup input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #00ff88;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+}
+
+.sliderGroup span {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.buttonGroup button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnStart {
+  background: #00ff88;
+  color: #000;
+}
+
+.btnStart:hover:not(:disabled) {
+  background: #00dd77;
+}
+
+.btnPause {
+  background: #ffaa00;
+  color: #000;
+}
+
+.btnPause:hover:not(:disabled) {
+  background: #ee9900;
+}
+
+.btnResume {
+  background: #4488ff;
+  color: #fff;
+}
+
+.btnResume:hover:not(:disabled) {
+  background: #3377ee;
+}
+
+.btnReset {
+  background: #ff4444;
+  color: #fff;
+}
+
+.btnReset:hover:not(:disabled) {
+  background: #ee3333;
+}
+
+.buttonGroup button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

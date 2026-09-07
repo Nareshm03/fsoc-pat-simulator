@@ -1,0 +1,56 @@
+.presetContainer {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.presetLabel {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.presetButtons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+}
+
+.presetBtn {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #2a2a2a;
+  color: #00ff88;
+  border: 1px solid #00ff8844;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.presetBtn:hover {
+  background: #00ff8822;
+  border-color: #00ff88;
+  transform: translateY(-2px);
+}
+
+.presetBtn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 1200px) {
+  .presetButtons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .presetButtons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
