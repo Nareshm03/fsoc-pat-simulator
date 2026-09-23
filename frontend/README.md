@@ -1,47 +1,73 @@
 # FSOC PAT Simulator - Frontend
 
-This is the Next.js frontend for the Free Space Optical Communication Point, Acquisition, and Tracking simulator.
+Next.js dashboard for the Free Space Optical Communication Pointing,
+Acquisition, and Tracking simulator.
 
 ## Getting Started
 
-First, install dependencies:
-
 ```bash
 npm install
-```
-
-Then, run the development server:
-
-```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the dashboard.
+Open [http://localhost:3000](http://localhost:3000). The FastAPI backend must
+be running (default `http://localhost:8000`, see backend `main.py`).
+
+## Configuration
+
+Backend URLs come from `src/app/config.ts` and can be overridden with
+environment variables (see `.env.example`):
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_WS_URL=ws://localhost:8000
+```
 
 ## Features
 
-- **Real-time Dashboard**: Displays PAT state, beacon position, tracking error, FPS, and gimbal angles
-- **Virtual Camera View**: Visualizes the beacon and tracking crosshair
-- **Disturbance Controls**: Sliders for turbulence, vibration, camera motion, and sensor noise
-- **Control Buttons**: Start, pause, and reset the simulation
-- **WebSocket Ready**: Prepared for real-time data streaming from the Python backend
+- **Real-time Dashboard**: PAT state, beacon position, tracking error, FPS,
+  and gimbal angles streamed over WebSocket (auto-reconnect with backoff).
+- **Virtual Camera View**: Beacon marker, crosshair, and error vector over
+  the live MJPEG-style frame stream.
+- **Disturbance Controls**: Debounced sliders plus presets for turbulence,
+  vibration, camera motion, and sensor noise.
+- **Control Buttons**: Start, pause, resume, and reset the simulation.
+- **Detector Switch**: Classical CV or YOLO11n; availability is probed from
+  `GET /detector` and synced over the socket.
+- **Dataset Generator**: On-demand YOLO training data via `WS /ws/dataset`,
+  with progress, cancel, and training next-steps.
+- **Experiment History**: Run headless experiments (`POST /experiments/run`),
+  browse saved runs, inspect exact metrics, compare two runs side-by-side,
+  and plot error-vs-time convergence (dependency-free SVG).
+
+## Scripts
+
+```bash
+npm run dev    # dev server (Turbopack)
+npm run build  # production build
+npm run start  # serve production build
+npm test       # vitest unit tests (pure helpers)
+npm run typecheck  # tsc --noEmit
+npm run lint   # next lint
+```
 
 ## Architecture
 
 ```
-Python Backend (WebSocket Server)
-       ↓
-WebSocket Connection
-       ↓
-Next.js Frontend
-       ↓
-React Dashboard Components
+Python Backend (FastAPI: REST + WebSocket)
+        ↓  ws://…/ws/simulation (telemetry @30Hz + JPEG frames)
+        ↓  http://…/detector, /experiments/*
+Next.js Frontend (src/app)
+        ↓
+React Dashboard Components (page + PresetButtons, DetectorSelector,
+  DatasetGenerator, ExperimentHistory, ConvergenceGraph)
 ```
 
-## Next Steps
+## Troubleshooting
 
-1. Install dependencies: `npm install`
-2. Run dev server: `npm run dev`
-3. Implement WebSocket connection to backend
-4. Add real-time frame streaming
-5. Add telemetry graphs with Chart.js or similar
+- **○ DISCONNECTED / CAMERA OFFLINE**: backend is down or unreachable —
+  check the URL in `.env.local`, then press RETRY in the header.
+- **YOLO shows Unavailable**: backend runs but `models/best.pt` is missing
+  (see backend training guide) — Classical CV keeps working.
+- **Experiment run fails**: check backend logs; large tick counts with YOLO
+  take minutes (server limit: `EXPERIMENT_RUN_TIMEOUT_S`).

@@ -20,9 +20,8 @@ REACQUIRE -> SEARCH (after reacquire_timeout)
 REACQUIRE -> ACQUIRE (target redetected)
 """
 
-import time
 from enum import Enum
-from typing import Optional, Tuple
+from typing import Optional
 
 
 class PATState(Enum):
@@ -55,10 +54,11 @@ class PATStateMachine:
         self.lock_duration = 2.0  # Seconds of sustained low error to achieve LOCK
         self.reacquire_timeout = 3.0  # Seconds in REACQUIRE before returning to SEARCH
         
-        # Internal state
+        # Internal state (all timestamps are simulation-time seconds)
         self._low_error_start_time: Optional[float] = None
         self._reacquire_start_time: Optional[float] = None
         self._last_detection_time: Optional[float] = None
+        self._last_update_time: Optional[float] = None
         self._loss_count = 0
         
     def update(
@@ -80,11 +80,12 @@ class PATStateMachine:
         Returns:
             Current PAT state after update
         """
+        self._last_update_time = current_time
         if not simulation_running:
             self.state = PATState.IDLE
             self._reset_timers()
             return self.state
-        
+
         # Update last detection time
         if detected:
             self._last_detection_time = current_time
@@ -162,6 +163,7 @@ class PATStateMachine:
         self.state = PATState.IDLE
         self._reset_timers()
         self._last_detection_time = None
+        self._last_update_time = None
         self._loss_count = 0
     
     def get_control_mode(self) -> str:
@@ -182,13 +184,20 @@ class PATStateMachine:
         return 'idle'
     
     def get_stats(self) -> dict:
-        """Get statistics about state machine."""
+        """Get statistics about state machine.
+
+        All times are simulation-time seconds (matching the
+        ``current_time`` passed to :meth:`update`), never wall-clock.
+        """
+        if (
+            self._low_error_start_time is not None
+            and self._last_update_time is not None
+        ):
+            time_below = self._last_update_time - self._low_error_start_time
+        else:
+            time_below = 0.0
         return {
             "current_state": self.state.value,
             "loss_count": self._loss_count,
-            "time_below_lock_threshold": (
-                time.time() - self._low_error_start_time
-                if self._low_error_start_time is not None
-                else 0.0
-            )
+            "time_below_lock_threshold": time_below,
         }

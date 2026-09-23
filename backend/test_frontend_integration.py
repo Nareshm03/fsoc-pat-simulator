@@ -68,7 +68,7 @@ async def test_frontend_simulation():
                             "elevation": data.get("gimbal", {}).get("elevation", 0),
                             "confidence": data.get("detection", {}).get("confidence", 0),
                             "fsoc_status": data.get("fsoc", {}).get("status", "UNKNOWN"),
-                            "fps": data.get("performance", {}).get("actual_fps", 0)
+                            "fps": data.get("performance", {}).get("processing_fps", 0)
                         }
                         
                         # Store sample
@@ -137,7 +137,7 @@ async def test_frontend_simulation():
             first = telemetry_samples[0]
             last = telemetry_samples[-1]
             
-            print(f"   Initial State:")
+            print("   Initial State:")
             print(f"      PAT State:    {first['pat_state']}")
             print(f"      Detected:     {first['detected']}")
             print(f"      Azimuth:      {first['azimuth']:.2f}°")
@@ -145,7 +145,7 @@ async def test_frontend_simulation():
             print(f"      Link:         {first['fsoc_status']}")
             print()
             
-            print(f"   Final State:")
+            print("   Final State:")
             print(f"      PAT State:    {last['pat_state']}")
             print(f"      Detected:     {last['detected']}")
             print(f"      Beacon:       ({last['beacon_x']:.1f}, {last['beacon_y']:.1f})")
@@ -156,7 +156,7 @@ async def test_frontend_simulation():
             print(f"      FPS:          {last['fps']:.1f}")
             print()
             
-            print(f"   Changes:")
+            print("   Changes:")
             print(f"      Δ Azimuth:    {last['azimuth'] - first['azimuth']:+.2f}°")
             print(f"      Δ Elevation:  {last['elevation'] - first['elevation']:+.2f}°")
             print()

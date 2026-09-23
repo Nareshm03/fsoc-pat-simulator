@@ -4,7 +4,6 @@ This simulates what the frontend does.
 """
 import asyncio
 import sys
-from pathlib import Path
 
 # Import simulation modules
 from simulation.camera import VirtualCamera
@@ -21,7 +20,7 @@ async def test_api_integration():
     print("="*80 + "\n")
     
     # Setup logging
-    logger = setup_logging()
+    setup_logging()
     
     # Initialize simulation components (like SimulationManager does)
     camera = VirtualCamera(width=1280, height=720)
@@ -116,12 +115,12 @@ async def test_api_integration():
     print("="*80 + "\n")
     
     print("Summary:")
-    print(f"  - Generator can be called with new signature")
-    print(f"  - Split pre-assignment works")
-    print(f"  - Sample generation works")
-    print(f"  - Validation works")
-    print(f"  - All metadata files generated")
-    print(f"\nFrontend should now work correctly!\n")
+    print("  - Generator can be called with new signature")
+    print("  - Split pre-assignment works")
+    print("  - Sample generation works")
+    print("  - Validation works")
+    print("  - All metadata files generated")
+    print("\nFrontend should now work correctly!\n")
     
     return True
 

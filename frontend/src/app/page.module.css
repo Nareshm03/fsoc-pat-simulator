@@ -1,48 +1,160 @@
+/* Dashboard chrome per DESIGN.md: cream canvas, ink text, hairline
+ * rules, 4px radius on interactive elements, 0px on containers,
+ * Berkeley Mono throughout, Apple semantic ramp for in-product states. */
+
 .container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0a0a0a;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-mono);
 }
 
+/* primary-nav: cream, ink, 56px, hairline bottom rule. */
 .header {
-  background: #1a1a1a;
-  padding: 1rem 2rem;
-  border-bottom: 2px solid #333;
+  background: var(--canvas);
+  min-height: 56px;
+  padding: 8px 32px;
+  border-bottom: 1px solid var(--hairline);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .header h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #00ff88;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
   margin: 0;
 }
 
+.headerStatus {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.runStatus {
+  color: var(--success);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2;
+}
+
+.pauseStatus {
+  color: var(--warning);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2;
+}
+
+/* badge-news pattern: 4px radius, caption type, 2px 8px padding. */
 .connectionStatus {
-  font-size: 0.875rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
 }
 
 .connectionStatus.connected {
-  background: #00ff8822;
-  color: #00ff88;
+  background: var(--surface-dark);
+  color: var(--on-dark);
 }
 
 .connectionStatus.disconnected {
-  background: #ff444422;
-  color: #ff4444;
+  background: var(--surface-card);
+  color: var(--mute);
 }
 
 .mainContent {
   display: flex;
   flex: 1;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Mission hero strip: the four glance-critical readouts (pointing
+ * error, link margin, PAT state, detector) above the fold. Sharp
+ * console cells; display-scale values per display-xl token. */
+.heroStrip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.heroCell {
+  padding: 12px 32px;
+  border-right: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.heroCell:last-child {
+  border-right: none;
+}
+
+.heroLabel {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.heroValue {
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.heroValue small {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--mute);
+}
+
+.heroToneNominal {
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+}
+
+.heroToneMarginal {
+  color: color-mix(in srgb, var(--warning) 60%, var(--ink));
+}
+
+.heroToneOutage {
+  color: var(--danger-active);
+}
+
+.heroToneNodata {
+  color: var(--mute);
+}
+
+.heroBadgeRow {
+  display: flex;
+  align-items: center;
+  min-height: 57px;
+}
+
+.heroDetector {
+  display: inline-block;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
+  background: var(--surface-card);
+  color: var(--body);
 }
 
 .leftPanel {
@@ -55,15 +167,16 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
   overflow: hidden;
 }
 
 .cameraFrame {
   flex: 1;
   position: relative;
+  /* Live imagery surface: black is image data, not chrome. */
   background: #000;
   min-height: 400px;
   overflow: hidden;
@@ -84,9 +197,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #666;
-  font-size: 1.25rem;
-  font-weight: 600;
+  color: var(--on-dark-mute);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
   text-align: center;
   z-index: 1;
 }
@@ -95,11 +209,9 @@
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 2px solid #00ff88;
-  border-radius: 50%;
+  border: 2px solid var(--success);
+  border-radius: var(--radius-sm);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
-  animation: pulse 1s ease-in-out infinite;
   z-index: 10;
   pointer-events: none;
 }
@@ -114,9 +226,28 @@
   pointer-events: none;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+.yoloBbox {
+  position: absolute;
+  border: 2px solid var(--warning);
+  transform: translate(0, 0);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.yoloLabel {
+  position: absolute;
+  transform: translate(0, -100%);
+  background: var(--warning);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  font-family: var(--font-mono);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  z-index: 11;
+  pointer-events: none;
 }
 
 .crosshair {
@@ -149,11 +280,13 @@
 }
 
 .cameraLabel {
-  padding: 0.5rem 1rem;
-  background: #1a1a1a;
-  border-top: 1px solid #333;
-  font-size: 0.875rem;
-  color: #888;
+  padding: 8px 16px;
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
   text-align: center;
 }
 
@@ -161,225 +294,375 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 
+/* Containers are sharp rectangles on canvas (radius 0). */
 .statusCard {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
 }
 
 .statusCard h2 {
-  font-size: 0.875rem;
-  color: #888;
-  margin-bottom: 0.5rem;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+}
+
+/* badge-section-label: bare bold heading marker. */
+.statusCard h2::before {
+  content: '[+] ';
 }
 
 .stateBadge {
   display: inline-block;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 1rem;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
 }
 
+/* In-product state tones: tinted semantic bg, ink-deepened text. */
 .stateBadge.locked {
-  background: #00ff8844;
-  color: #00ff88;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
 }
 
 .stateBadge.fine_track {
-  background: #00ff8844;
-  color: #00ff88;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
 }
 
 .stateBadge.acquire {
-  background: #ffaa0044;
-  color: #ffaa00;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: color-mix(in srgb, var(--warning) 60%, var(--ink));
 }
 
 .stateBadge.search {
-  background: #4488ff44;
-  color: #4488ff;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent-active);
 }
 
 .stateBadge.tracking {
-  background: #ffaa0044;
-  color: #ffaa00;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: color-mix(in srgb, var(--warning) 60%, var(--ink));
 }
 
 .stateBadge.reacquire {
-  background: #ff884444;
-  color: #ff8844;
-}
-
-.stateBadge.running {
-  background: #00ff8844;
-  color: #00ff88;
-}
-
-.stateBadge.paused {
-  background: #ffaa0044;
-  color: #ffaa00;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
 }
 
 .stateBadge.idle {
-  background: #88888844;
-  color: #888;
+  background: var(--surface-card);
+  color: var(--mute);
 }
 
-.metricsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  flex: 1;
+/* YOLO pipeline status: warning tone while warming (missing detections
+ * expected, not beacon loss), success tone for the transient nominal
+ * confirmation. Same badge grammar as PAT/link states. */
+.warmupBadge {
+  display: inline-block;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
 }
 
-.metric {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1rem;
+.activeBadge {
+  display: inline-block;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+}
+
+.warmupHint {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+}
+
+.linkBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.linkDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.linkNominal {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+}
+
+.linkMarginal {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: color-mix(in srgb, var(--warning) 60%, var(--ink));
+}
+
+.linkOutage {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger-active);
+}
+
+.linkNodata {
+  background: var(--surface-card);
+  color: var(--mute);
+}
+
+/* Dense console readout: hairline-divided label/value rows replace
+ * boxed metric cards. Same values, tabular numerals, no per-value chrome. */
+.readoutTable {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  border-top: 1px solid var(--hairline);
+  margin-top: 16px;
 }
 
-.metricLabel {
-  font-size: 0.75rem;
-  color: #888;
+.readoutRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.readoutLabel {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
-.metricValue {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #e0e0e0;
-  font-family: 'Courier New', monospace;
+.readoutValue {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .linkStatus {
-  color: #00ff88;
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
 }
 
 .controlPanel {
-  background: #1a1a1a;
-  border-top: 2px solid #333;
-  padding: 1.5rem 2rem;
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+  padding: 24px 32px;
 }
 
 .sliderGroup {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+  gap: 32px;
+  margin-bottom: 24px;
 }
 
 .sliderGroup label {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #888;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
 }
 
-.sliderGroup input[type="range"] {
+.sliderGroup input[type='range'] {
   width: 100%;
   height: 4px;
-  background: #333;
+  background: var(--hairline-strong);
   border-radius: 2px;
   outline: none;
   -webkit-appearance: none;
+  appearance: none;
 }
 
-.sliderGroup input[type="range"]::-webkit-slider-thumb {
+.sliderGroup input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
   height: 16px;
-  background: #00ff88;
+  background: var(--ink);
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
+  border: none;
 }
 
-.sliderGroup input[type="range"]::-moz-range-thumb {
+.sliderGroup input[type='range']::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  background: #00ff88;
+  background: var(--ink);
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   border: none;
 }
 
 .sliderGroup span {
-  font-weight: 600;
-  color: #e0e0e0;
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 .buttonGroup {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
+/* button-md: 16px/500, line-height 2, 4px 20px, 36px height. */
 .bottomRow {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 2rem;
+  gap: 32px;
   align-items: center;
 }
 
 .buttonGroup button {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
+  padding: 4px 20px;
+  min-height: 36px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s;
 }
 
+/* button-primary: ink fill, cream text; pressed drops to ink-deep. */
 .btnStart {
-  background: #00ff88;
-  color: #000;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
 }
 
-.btnStart:hover:not(:disabled) {
-  background: #00dd77;
+.btnStart:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
 }
 
+/* button-secondary: canvas fill, ink text, hairline-strong border. */
 .btnPause {
-  background: #ffaa00;
-  color: #000;
-}
-
-.btnPause:hover:not(:disabled) {
-  background: #ee9900;
+  background: var(--canvas);
+  color: var(--ink);
+  border: 1px solid var(--hairline-strong);
 }
 
 .btnResume {
-  background: #4488ff;
-  color: #fff;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
 }
 
-.btnResume:hover:not(:disabled) {
-  background: #3377ee;
+.btnResume:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
 }
 
+/* Tertiary reset: secondary chrome with danger text, so START keeps the
+ * single primary slot and reset no longer competes with it. */
 .btnReset {
-  background: #ff4444;
-  color: #fff;
+  background: var(--canvas);
+  border: 1px solid var(--hairline-strong);
+  color: var(--danger-active);
 }
 
-.btnReset:hover:not(:disabled) {
-  background: #ee3333;
+.btnReset:active:not(:disabled) {
+  background: var(--surface-soft);
+  border-color: var(--danger-active);
 }
 
+/* button-disabled: card fill, ash text. */
 .buttonGroup button:disabled {
-  opacity: 0.4;
+  background: var(--surface-card);
+  border-color: var(--surface-card);
+  color: var(--ash);
   cursor: not-allowed;
+}
+
+/* Responsive console: stack below desktop widths; hero collapses
+ * 4 -> 2 -> 1 columns; sliders follow suit. */
+@media (max-width: 1100px) {
+  .heroStrip {
+    grid-template-columns: 1fr 1fr;
+  }
+  .heroCell:nth-child(2) {
+    border-right: none;
+  }
+  .heroCell:nth-child(1),
+  .heroCell:nth-child(2) {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .mainContent {
+    flex-direction: column;
+  }
+  .sliderGroup {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .bottomRow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 8px 16px;
+  }
+  .heroStrip {
+    grid-template-columns: 1fr;
+  }
+  .heroCell {
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
+    padding: 12px 16px;
+  }
+  .heroCell:last-child {
+    border-bottom: none;
+  }
+  .heroValue {
+    font-size: 28px;
+  }
+  .cameraFrame {
+    min-height: 240px;
+  }
+  .sliderGroup {
+    grid-template-columns: 1fr;
+  }
+  .controlPanel {
+    padding: 16px;
+  }
 }

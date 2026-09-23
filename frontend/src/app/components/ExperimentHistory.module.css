@@ -1,42 +1,23 @@
-.historyContainer {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1rem;
-  max-height: 400px;
-  display: flex;
-  flex-direction: column;
-}
-
-.historyHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid #333;
-}
-
-.historyHeader h2 {
-  font-size: 1rem;
-  color: #e0e0e0;
-  margin: 0;
-}
+/* Experiment history per DESIGN.md: flat canvas rows, hairline rules,
+ * mono type, semantic ramp reserved for lock/detector states. */
 
 .experimentCount {
-  font-size: 0.75rem;
-  color: #888;
-  background: #2a2a2a;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--on-dark);
+  background: var(--surface-dark);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
 }
 
 .experimentList {
-  flex: 1;
+  flex: none;
+  max-height: 280px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .experimentList::-webkit-scrollbar {
@@ -44,46 +25,43 @@
 }
 
 .experimentList::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--surface-soft);
   border-radius: 3px;
 }
 
 .experimentList::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--hairline-strong);
   border-radius: 3px;
 }
 
-.experimentList::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-
+/* list-row: canvas bg, body text, 8px vertical padding. */
 .experimentCard {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: #0a0a0a;
-  border: 1px solid #333;
-  border-radius: 4px;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s;
 }
 
 .experimentCard:hover {
-  background: #1a1a1a;
-  border-color: #00ff8844;
+  background: var(--surface-soft);
+  border-color: var(--hairline-strong);
 }
 
 .experimentCard.selected {
-  background: #1a1a1a;
-  border-color: #00ff88;
+  background: var(--surface-soft);
+  border-color: var(--ink);
 }
 
 .expId {
-  font-size: 0.875rem;
+  font-size: 16px;
   font-weight: 700;
-  color: #00ff88;
-  font-family: 'Courier New', monospace;
+  line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--font-mono);
   min-width: 40px;
 }
 
@@ -91,84 +69,312 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 4px;
 }
 
 .expName {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e0e0e0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
 }
 
 .expTime {
-  font-size: 0.7rem;
-  color: #888;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
 }
 
 .expMetrics {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .expMetric {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
+  gap: 2px;
   align-items: flex-end;
 }
 
 .metricLabel {
-  font-size: 0.65rem;
-  color: #888;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
   text-transform: uppercase;
 }
 
 .metricValue {
-  font-size: 0.875rem;
-  font-weight: 600;
-  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  font-family: var(--font-mono);
+  color: var(--ink);
 }
 
+/* Lock-quality scale on the semantic ramp (in-product use). */
 .lockExcellent {
-  color: #00ff88;
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
 }
 
 .lockGood {
-  color: #88ff00;
+  color: var(--accent-active);
 }
 
 .lockFair {
-  color: #ffaa00;
+  color: var(--warning-active);
 }
 
 .lockPoor {
-  color: #ff4444;
+  color: var(--danger-active);
 }
 
 .expDetector {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  background: #2a2a2a;
-  border-radius: 4px;
-  color: #888;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  padding: 2px 8px;
+  background: var(--surface-card);
+  border-radius: var(--radius-sm);
+  color: var(--body);
 }
 
-.emptyState {
-  flex: 1;
+/* Narrow screens: experiment rows wrap instead of crushing. */
+@media (max-width: 640px) {
+  .experimentCard {
+    flex-wrap: wrap;
+  }
+  .expMetrics {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* text-input: soft fill, hairline border; focus flips to canvas + ink. */
+.runForm {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.formRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.formField {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  text-transform: uppercase;
+}
+
+.formField select,
+.formField input {
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: var(--font-mono);
+  padding: 8px 12px;
+  min-width: 0;
+}
+
+.formField select:focus,
+.formField input:focus {
+  outline: none;
+  background: var(--canvas);
+  border-color: var(--ink);
+}
+
+.formField input {
+  width: 5rem;
+}
+
+/* button-primary: ink fill, cream text. */
+.runButton {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--on-primary);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
+  padding: 4px 20px;
+  min-height: 36px;
+}
+
+.runButton:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
+}
+
+.runButton:disabled {
+  background: var(--surface-card);
+  border-color: var(--surface-card);
+  color: var(--ash);
+  cursor: wait;
+}
+
+.compareCheck {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: #666;
-  padding: 2rem;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-.emptyState p {
-  margin: 0;
+.compareCheck input {
+  cursor: pointer;
+  accent-color: var(--ink);
 }
 
-.emptyHint {
-  font-size: 0.875rem;
-  color: #555;
+.compareCheck input:disabled {
+  cursor: not-allowed;
+}
+
+.compareBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.compareCount {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  flex: 1;
+}
+
+.compareButton {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--on-primary);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
+  padding: 4px 20px;
+}
+
+.compareButton:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
+}
+
+.compareButton:disabled {
+  background: var(--surface-card);
+  border-color: var(--surface-card);
+  color: var(--ash);
+  cursor: not-allowed;
+}
+
+/* button-secondary: canvas fill, ink text, strong hairline border. */
+.compareClear {
+  background: var(--canvas);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
+  padding: 4px 20px;
+}
+
+.comparePanel {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  overflow-x: auto;
+}
+
+.compareTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: var(--font-mono);
+}
+
+.compareTable th,
+.compareTable td {
+  border: 1px solid var(--hairline);
+  padding: 8px 12px;
+  text-align: left;
+  color: var(--ink);
+}
+
+.compareTable th {
+  background: var(--surface-soft);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.compareTable td:first-child {
+  color: var(--mute);
+}
+
+/* chart-tile: canvas tile, caption type, hairline frame. */
+.graphPanel {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+}
+
+.graphLegend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--body);
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.graphSvg {
+  width: 100%;
+  height: auto;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
 }

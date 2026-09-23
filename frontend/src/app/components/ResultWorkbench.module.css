@@ -1,0 +1,128 @@
+/* Results-Workbench shared primitives: one section shell, one row/grid
+ * rhythm, one feedback-notice grammar for the Mission report, Experiment
+ * detail/compare, and Convergence graph surfaces. DESIGN.md vocabulary:
+ * flat canvas, hairline rules, mono type, 4px radius on chips only. */
+
+/* Section shell: replaces missionContainer/historyContainer. */
+.section {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+}
+
+/* Section header: replaces missionHeader/historyHeader. */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* badge-section-label marker, matching page status cards. */
+.header h2::before {
+  content: '[+] ';
+}
+
+/* Count chip: replaces experimentCount. */
+.count {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--on-dark);
+  background: var(--surface-dark);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* Row grid: replaces missionDetail/detailGrid. Subsection titles keep
+ * the shared detailTitle below for identical hierarchy. */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  margin: 12px 0 8px;
+}
+
+/* faq-row: plain label/value text rows on hairline rhythm. */
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.row span:first-child {
+  color: var(--mute);
+}
+
+/* Feedback notices: replaces per-surface loadingText/errorBox/empty
+ * blocks. Tone carries meaning; text stays ink/mute (never color-only). */
+.notice {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  padding: 8px 0;
+}
+
+.noticeLoading {
+  color: var(--mute);
+}
+
+.noticeEmpty {
+  color: var(--mute);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 0 0;
+}
+
+.noticeEmpty p {
+  margin: 0;
+  font-size: 16px;
+  color: var(--body);
+}
+
+.noticeError {
+  margin-top: 8px;
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  color: var(--danger-active);
+  padding: 8px 12px;
+  word-break: break-word;
+}
+
+.noticeCenter {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

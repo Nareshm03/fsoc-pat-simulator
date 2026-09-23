@@ -24,7 +24,7 @@ for i, (x, y) in enumerate(positions):
         print(f"  Tracked: ({tracking['x']:.1f}, {tracking['y']:.1f})")
         print(f"  Velocity: ({tracking['vx']:.1f}, {tracking['vy']:.1f}) px/frame")
     else:
-        print(f"  No tracking")
+        print("  No tracking")
 
 print("\n" + "=" * 50)
 print("✓ Tracker working! Velocity computed from motion")

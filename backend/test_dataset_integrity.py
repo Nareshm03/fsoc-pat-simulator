@@ -86,19 +86,19 @@ def test_dataset_integrity(dataset_dir='dataset'):
         print(f"❌ FAIL: Train-Val overlap: {sorted(train_val_overlap)}")
         all_tests_passed = False
     else:
-        print(f"✓ PASS: No Train-Val overlap")
+        print("✓ PASS: No Train-Val overlap")
     
     if train_test_overlap:
         print(f"❌ FAIL: Train-Test overlap: {sorted(train_test_overlap)}")
         all_tests_passed = False
     else:
-        print(f"✓ PASS: No Train-Test overlap")
+        print("✓ PASS: No Train-Test overlap")
     
     if val_test_overlap:
         print(f"❌ FAIL: Val-Test overlap: {sorted(val_test_overlap)}")
         all_tests_passed = False
     else:
-        print(f"✓ PASS: No Val-Test overlap")
+        print("✓ PASS: No Val-Test overlap")
     
     test_results.append(("Split Overlap", overlap_count == 0, f"{overlap_count} overlaps"))
     print()
@@ -205,7 +205,7 @@ def test_dataset_integrity(dataset_dir='dataset'):
                 pass  # Already caught in format validation
     
     if bbox_errors == 0:
-        print(f"✓ PASS: All bounding boxes are inside image bounds")
+        print("✓ PASS: All bounding boxes are inside image bounds")
     else:
         print(f"❌ FAIL: {bbox_errors} bounding boxes extend outside image")
         all_tests_passed = False
@@ -256,7 +256,7 @@ def test_dataset_integrity(dataset_dir='dataset'):
     print(f"  Passed: {passed_tests}")
     print(f"  Failed: {failed_tests}")
     
-    print(f"\nDetailed Results:")
+    print("\nDetailed Results:")
     for test_name, passed, details in test_results:
         status = "✓ PASS" if passed else "❌ FAIL"
         print(f"  {status} | {test_name:25s} | {details}")

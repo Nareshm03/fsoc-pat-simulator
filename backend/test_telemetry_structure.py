@@ -41,7 +41,8 @@ async def test_telemetry():
                         print(f"Beacon X:     {data.get('detection', {}).get('x', 'N/A')}")
                         print(f"Beacon Y:     {data.get('detection', {}).get('y', 'N/A')}")
                         print(f"Error (px):   {data.get('error', {}).get('pixel', 'N/A')}")
-                        print(f"FPS:          {data.get('performance', {}).get('actual_fps', 'N/A')}")
+                        print(f"Sim FPS:      {data.get('performance', {}).get('simulation_fps', 'N/A')}")
+                        print(f"Proc FPS:     {data.get('performance', {}).get('processing_fps', 'N/A')}")
                         print(f"Azimuth:      {data.get('gimbal', {}).get('azimuth', 'N/A')}")
                         print(f"Elevation:    {data.get('gimbal', {}).get('elevation', 'N/A')}")
                         print(f"Confidence:   {data.get('detection', {}).get('confidence', 'N/A')}")
@@ -54,8 +55,8 @@ async def test_telemetry():
                               f"state={data.get('pat', {}).get('state')}, "
                               f"beacon=({data.get('detection', {}).get('x', 0):.1f}, "
                               f"{data.get('detection', {}).get('y', 0):.1f}), "
-                              f"error={data.get('error', {}).get('pixel', 0):.1f}px, "
-                              f"fps={data.get('performance', {}).get('actual_fps', 0):.1f}")
+                               f"error={data.get('error', {}).get('pixel', 0):.1f}px, "
+                               f"fps={data.get('performance', {}).get('processing_fps', 0):.1f}")
                 
                 elif data.get("type") == "frame":
                     frame_count += 1

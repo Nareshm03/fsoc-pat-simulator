@@ -6,12 +6,12 @@ print("=" * 50)
 print("PAN/TILT SYSTEM TEST")
 print("=" * 50)
 
-print(f"\nInitial state:")
+print("\nInitial state:")
 print(f"  Azimuth: {pan_tilt.azimuth:.2f}°")
 print(f"  Elevation: {pan_tilt.elevation:.2f}°")
 
 # Test velocity limiting
-print(f"\nTest 1: Apply excessive command (should be limited)")
+print("\nTest 1: Apply excessive command (should be limited)")
 print(f"  Command: azimuth=100°/s (exceeds max {pan_tilt.max_azimuth_rate}°/s)")
 
 dt = 0.1  # 100ms timestep
@@ -24,7 +24,7 @@ if pan_tilt.azimuth_velocity == pan_tilt.max_azimuth_rate:
     print(f"  ✓ Velocity correctly limited to {pan_tilt.max_azimuth_rate}°/s")
 
 # Test position limiting
-print(f"\nTest 2: Move to extreme position")
+print("\nTest 2: Move to extreme position")
 for _ in range(100):
     pan_tilt.update(azimuth_command=50.0, elevation_command=0.0, dt=0.1)
 
@@ -38,7 +38,7 @@ if pan_tilt.azimuth == pan_tilt.max_azimuth:
 pan_tilt.azimuth = 0.0
 pan_tilt.azimuth_velocity = 0.0
 
-print(f"\nTest 3: Elevation movement")
+print("\nTest 3: Elevation movement")
 for i in range(5):
     pan_tilt.update(azimuth_command=0.0, elevation_command=10.0, dt=0.1)
     print(f"  Step {i+1}: elevation = {pan_tilt.elevation:.2f}°")

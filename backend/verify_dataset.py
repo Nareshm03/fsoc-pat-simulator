@@ -46,7 +46,7 @@ def verify_dataset(dataset_dir='dataset'):
         
         # Check 1: Image count == Label count
         if len(images) == len(labels):
-            print(f"   ✓ Image count matches label count")
+            print("   ✓ Image count matches label count")
         else:
             print(f"   ❌ Image count ({len(images)}) != Label count ({len(labels)})")
             all_passed = False
@@ -54,7 +54,7 @@ def verify_dataset(dataset_dir='dataset'):
         # Check 2: Missing labels
         missing_labels = set(images) - set(labels)
         if not missing_labels:
-            print(f"   ✓ No missing labels")
+            print("   ✓ No missing labels")
         else:
             print(f"   ❌ Missing labels: {missing_labels}")
             all_passed = False
@@ -62,7 +62,7 @@ def verify_dataset(dataset_dir='dataset'):
         # Check 3: Missing images
         missing_images = set(labels) - set(images)
         if not missing_images:
-            print(f"   ✓ No missing images")
+            print("   ✓ No missing images")
         else:
             print(f"   ❌ Missing images: {missing_images}")
             all_passed = False
@@ -107,9 +107,9 @@ def verify_dataset(dataset_dir='dataset'):
                 invalid_labels.append(f"{label_file.name}: Parse error: {e}")
         
         if not invalid_labels:
-            print(f"   ✓ All labels valid YOLO format")
+            print("   ✓ All labels valid YOLO format")
         else:
-            print(f"   ❌ Invalid labels found:")
+            print("   ❌ Invalid labels found:")
             for error in invalid_labels[:5]:
                 print(f"      - {error}")
             if len(invalid_labels) > 5:
@@ -117,9 +117,9 @@ def verify_dataset(dataset_dir='dataset'):
             all_passed = False
         
         if not bbox_errors:
-            print(f"   ✓ All bounding boxes inside image bounds")
+            print("   ✓ All bounding boxes inside image bounds")
         else:
-            print(f"   ❌ BBox errors:")
+            print("   ❌ BBox errors:")
             for error in bbox_errors[:5]:
                 print(f"      - {error}")
             all_passed = False
@@ -127,33 +127,28 @@ def verify_dataset(dataset_dir='dataset'):
         print()
     
     # Check 5: No overlap between splits
-    print(f"🔍 Cross-Split Validation:")
+    print("🔍 Cross-Split Validation:")
     
     train_val = all_files['train'] & all_files['val']
     train_test = all_files['train'] & all_files['test']
     val_test = all_files['val'] & all_files['test']
-    
-    overlap_found = False
-    
+
     if not train_val:
-        print(f"   ✓ No train-val overlap")
+        print("   ✓ No train-val overlap")
     else:
         print(f"   ❌ Train-Val overlap: {sorted(train_val)}")
-        overlap_found = True
         all_passed = False
-    
+
     if not train_test:
-        print(f"   ✓ No train-test overlap")
+        print("   ✓ No train-test overlap")
     else:
         print(f"   ❌ Train-Test overlap: {sorted(train_test)}")
-        overlap_found = True
         all_passed = False
-    
+
     if not val_test:
-        print(f"   ✓ No val-test overlap")
+        print("   ✓ No val-test overlap")
     else:
         print(f"   ❌ Val-Test overlap: {sorted(val_test)}")
-        overlap_found = True
         all_passed = False
     
     # Check 6: Unique filenames globally
@@ -171,7 +166,7 @@ def verify_dataset(dataset_dir='dataset'):
     
     # Summary
     print(f"{'='*70}")
-    print(f"SUMMARY")
+    print("SUMMARY")
     print(f"{'='*70}")
     print(f"Total Images: {len(all_sample_ids)}")
     print(f"  Train: {len(all_files['train'])}")

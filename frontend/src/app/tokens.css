@@ -1,0 +1,63 @@
+/**
+ * Visual design tokens — transcribed 1:1 from project-root DESIGN.md
+ * (front matter: colors, typography, rounded, spacing).
+ *
+ * Usage: `var(--ink)`, `var(--font-mono)`, `var(--space-lg)`, etc.
+ * No component styles live here; this file only declares the contract.
+ */
+
+:root {
+  /* Brand & text */
+  --primary: #201d1d;
+  --on-primary: #fdfcfc;
+  --ink: #201d1d;
+  --ink-deep: #0f0000;
+  --charcoal: #302c2c;
+  --body: #424245;
+  --mute: #646262;
+  --stone: #6e6e73;
+  --ash: #9a9898;
+
+  /* Surfaces */
+  --canvas: #fdfcfc;
+  --surface-soft: #f8f7f7;
+  --surface-card: #f1eeee;
+  --surface-dark: #201d1d;
+  --surface-dark-elevated: #302c2c;
+  --hairline: rgba(15, 0, 0, 0.12);
+  --hairline-strong: #646262;
+  --on-dark: #fdfcfc;
+  --on-dark-mute: #9a9898;
+
+  /* Semantic ramp (in-product signals: link states, detector status) */
+  --accent: #007aff;
+  --accent-hover: #0056b3;
+  --accent-active: #004085;
+  --warning: #ff9f0a;
+  --warning-hover: #cc7f08;
+  --warning-active: #995f06;
+  --danger: #ff3b30;
+  --danger-hover: #d70015;
+  --danger-active: #a50011;
+  --success: #30d158;
+
+  /* Typography: Berkeley Mono with the documented fallback stack.
+   * Berkeley Mono itself is a paid face and is NOT bundled; the stack
+   * below is the DESIGN.md fallback chain (IBM Plex Mono first). */
+  --font-mono: 'Berkeley Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular,
+    Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* Radius: 4px interactive, 0px containers */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+
+  /* Spacing */
+  --space-xxs: 1px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+  --space-section: 96px;
+}

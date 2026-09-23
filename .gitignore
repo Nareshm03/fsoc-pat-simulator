@@ -56,15 +56,19 @@ logs/
 Thumbs.db
 .DS_Store
 
-# Model files (optional - uncomment if models are too large)
-# *.pt
-# *.onnx
-# *.pth
+# Model files: required runtime assets, kept via Git LFS (see .gitattributes).
+# Do NOT ignore backend/models/best.pt(.zip) - YOLO detector loads them.
 
-# Large datasets (optional - keep structure but not all images)
+# Large datasets: backend/dataset (+dataset.zip) is the intentional training
+# deliverable referenced by COLAB_TRAINING_GUIDE.md - keep tracked.
 # backend/dataset/images/train/*
 # backend/dataset/images/val/*
 # backend/dataset/images/test/*
 
-# Test outputs
+# Test outputs (regenerable: python backend/test_camera_auto.py)
 test_frame.jpg
+backend/test_output.png
+
+# Runtime/generated outputs (regenerable; never commit contents)
+backend/experiment_results/
+backend/benchmark_results/

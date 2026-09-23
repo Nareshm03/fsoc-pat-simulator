@@ -1,5 +1,10 @@
 """
 Pydantic schemas for configuration and data models.
+
+NOTE: These schemas are currently informational only (nothing imports
+them at runtime). Defaults mirror the live simulation
+(SimulationManager at 30 Hz, VirtualCamera 1280x720, Target FOV
+40x30 deg, PATController acquire-mode gains) so they stay truthful.
 """
 from typing import Optional, Tuple
 from pydantic import BaseModel, Field
@@ -7,27 +12,28 @@ from pydantic import BaseModel, Field
 
 class SimulationConfig(BaseModel):
     """Configuration for the simulation."""
-    
+
     # Time parameters
-    time_step: float = Field(default=0.01, description="Simulation time step [s]")
+    time_step: float = Field(default=1.0 / 30.0, description="Simulation time step [s]")
     duration: Optional[float] = Field(default=None, description="Simulation duration [s]")
-    
+
     # Target parameters
     target_orbital_period: float = Field(default=6000.0, description="Target orbital period [s]")
     target_semi_major_axis: float = Field(default=7000e3, description="Semi-major axis [m]")
-    
-    # Camera parameters
-    camera_resolution: Tuple[int, int] = Field(default=(1024, 1024), description="Camera resolution")
-    camera_frame_rate: float = Field(default=100.0, description="Camera frame rate [Hz]")
-    camera_fov: float = Field(default=0.0873, description="Field of view [rad]")
-    
+
+    # Camera parameters (mirror VirtualCamera + Target live values)
+    camera_resolution: Tuple[int, int] = Field(default=(1280, 720), description="Camera resolution [w, h] px")
+    camera_frame_rate: float = Field(default=30.0, description="Camera frame rate [Hz]")
+    camera_fov_horizontal_deg: float = Field(default=40.0, description="Horizontal field of view [deg]")
+    camera_fov_vertical_deg: float = Field(default=30.0, description="Vertical field of view [deg]")
+
     # Detector parameters
     detection_threshold: float = Field(default=5.0, description="Detection SNR threshold")
-    
-    # PID gains
-    pid_kp: float = Field(default=0.5, description="Proportional gain")
-    pid_ki: float = Field(default=0.1, description="Integral gain")
-    pid_kd: float = Field(default=0.05, description="Derivative gain")
+
+    # PID gains (mirror PATController acquire-mode gains)
+    pid_kp: float = Field(default=0.10, description="Proportional gain")
+    pid_ki: float = Field(default=0.002, description="Integral gain")
+    pid_kd: float = Field(default=0.02, description="Derivative gain")
     
     # FSO parameters
     fso_wavelength: float = Field(default=1550e-9, description="Laser wavelength [m]")

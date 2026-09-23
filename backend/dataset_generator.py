@@ -10,7 +10,6 @@ Automatically generates labeled training data for beacon detection:
 
 import cv2
 import numpy as np
-import os
 import random
 from pathlib import Path
 from typing import Tuple, Dict, List

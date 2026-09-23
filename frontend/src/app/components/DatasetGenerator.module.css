@@ -1,129 +1,154 @@
+/* Dataset generator per DESIGN.md: flat canvas blocks, hairline rules,
+ * text-input + button-primary vocabulary, semantic tones for status. */
+
 .container {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-top: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 24px;
+  margin-top: 16px;
+  font-family: var(--font-mono);
 }
 
 .container h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.25rem;
-  color: #fff;
-  font-weight: 600;
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.container h2::before {
+  content: '[+] ';
 }
 
 .controls {
   display: flex;
   align-items: flex-end;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .inputGroup label {
-  font-size: 0.875rem;
-  color: #aaa;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  text-transform: uppercase;
 }
 
+/* text-input: soft fill, hairline border; focus flips to canvas + ink. */
 .numberInput {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 0.5rem 0.75rem;
-  color: #fff;
-  font-size: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  min-height: 40px;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: var(--font-mono);
   width: 150px;
 }
 
 .numberInput:focus {
   outline: none;
-  border-color: #00ff88;
+  background: var(--canvas);
+  border-color: var(--ink);
 }
 
 .numberInput:disabled {
-  opacity: 0.5;
+  background: var(--surface-card);
+  color: var(--ash);
   cursor: not-allowed;
 }
 
+/* button-primary: ink fill, cream text, 36px height. */
 .generateBtn {
-  background: linear-gradient(135deg, #00ff88, #00dd77);
-  color: #000;
-  border: none;
-  border-radius: 4px;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 700;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 4px 20px;
+  min-height: 36px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
   cursor: pointer;
-  transition: all 0.2s;
   white-space: nowrap;
 }
 
-.generateBtn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #00dd77, #00bb66);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+.generateBtn:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
 }
 
 .generateBtn:disabled {
-  background: #444;
-  color: #666;
+  background: var(--surface-card);
+  border-color: var(--surface-card);
+  color: var(--ash);
   cursor: not-allowed;
-  transform: none;
 }
 
 .error {
-  background: #ff444422;
-  border: 1px solid #ff4444;
-  border-radius: 4px;
-  padding: 1rem;
-  color: #ff8888;
-  margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--danger-active);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  margin-bottom: 16px;
 }
 
 .progress {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
 }
 
 .progressHeader {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
-  color: #aaa;
-  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
 }
 
 .progressBar {
-  background: #1a1a1a;
-  border-radius: 4px;
+  background: var(--surface-card);
+  border-radius: var(--radius-sm);
   height: 8px;
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .progressFill {
-  background: linear-gradient(90deg, #00ff88, #00dd77);
+  background: var(--accent);
   height: 100%;
-  transition: width 0.3s ease;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .progressDetails {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  font-size: 0.875rem;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .progressItem {
@@ -133,185 +158,206 @@
 }
 
 .progressItem .label {
-  color: #888;
+  color: var(--mute);
   font-weight: 500;
 }
 
+/* badge: 4px radius, caption type, 2px 8px padding. */
 .badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 3px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
 }
 
 .badge.train {
-  background: #00ff8822;
-  color: #00ff88;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
 }
 
 .badge.val {
-  background: #4488ff22;
-  color: #4488ff;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent-active);
 }
 
 .badge.test {
-  background: #ffaa0022;
-  color: #ffaa00;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
 }
 
 .filename {
-  font-family: monospace;
-  color: #aaa;
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--mute);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
 }
 
 .success {
-  color: #00ff88;
-  font-weight: 600;
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+  font-weight: 500;
 }
 
 .warning {
-  color: #ffaa00;
-  font-weight: 600;
+  color: var(--warning-active);
+  font-weight: 500;
 }
 
 .stats {
-  background: #2a2a2a;
-  border: 1px solid #00ff88;
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
 }
 
 .stats h3 {
-  margin: 0 0 1rem 0;
-  color: #00ff88;
-  font-size: 1.25rem;
+  margin: 0 0 16px 0;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
 .statItem {
-  background: #1a1a1a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
   text-align: center;
 }
 
 .statLabel {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .statValue {
-  font-size: 1.5rem;
-  color: #fff;
+  font-size: 16px;
+  color: var(--ink);
   font-weight: 700;
+  line-height: 1.5;
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .percentage {
-  font-size: 0.875rem;
-  color: #888;
+  font-size: 14px;
+  color: var(--mute);
   font-weight: 400;
+  line-height: 2;
 }
 
 .outputInfo {
-  background: #1a1a1a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
 .outputInfo strong {
   display: block;
-  margin-bottom: 0.5rem;
-  color: #aaa;
-  font-size: 0.875rem;
+  margin-bottom: 8px;
+  color: var(--mute);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
 }
 
+/* install-snippet: card fill, ink mono, 4px radius, 12px 16px. */
 .path {
   display: block;
-  background: #0a0a0a;
-  border: 1px solid #333;
-  border-radius: 3px;
-  padding: 0.5rem;
-  font-family: monospace;
-  font-size: 0.875rem;
-  color: #00ff88;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink);
   word-break: break-all;
 }
 
 .nextSteps {
-  background: #1a1a1a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
 }
 
 .nextSteps h4 {
-  margin: 0 0 0.75rem 0;
-  color: #fff;
-  font-size: 1rem;
+  margin: 0 0 12px 0;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .nextSteps ol {
   margin: 0;
-  padding-left: 1.5rem;
-  color: #aaa;
-  font-size: 0.875rem;
-  line-height: 1.8;
+  padding-left: 24px;
+  color: var(--body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .nextSteps code {
-  background: #0a0a0a;
-  border: 1px solid #333;
-  border-radius: 3px;
-  padding: 0.125rem 0.375rem;
-  font-family: monospace;
-  font-size: 0.8125rem;
-  color: #4488ff;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--ink);
 }
 
 .info {
-  background: #2a2a2a;
-  border: 1px solid #444;
-  border-radius: 4px;
-  padding: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 16px;
 }
 
 .info h4 {
-  margin: 0 0 0.75rem 0;
-  color: #fff;
-  font-size: 1rem;
+  margin: 0 0 12px 0;
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .info ul {
   margin: 0;
-  padding-left: 1.5rem;
-  color: #aaa;
-  font-size: 0.875rem;
-  line-height: 1.8;
+  padding-left: 24px;
+  color: var(--body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .info strong {
-  color: #fff;
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 500;
 }

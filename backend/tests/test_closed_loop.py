@@ -239,7 +239,7 @@ class TestClosedLoop:
         assert abs(final_gimbal - target_az_deg) < 2.0, \
             f"Gimbal should converge to target angle: target={target_az_deg}, final={final_gimbal}"
         
-        print(f"✓ Test 5 PASSED: Feedback loop converges")
+        print("✓ Test 5 PASSED: Feedback loop converges")
         print(f"  Initial error: {initial_error:.1f}px, Final error: {final_error:.1f}px")
         print(f"  Initial gimbal: {initial_gimbal:.2f}°, Final gimbal: {final_gimbal:.2f}°")
         print(f"  Target angle: {target_az_deg:.2f}°")

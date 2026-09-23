@@ -1,100 +1,141 @@
+/* Detector selector per DESIGN.md: canvas container, list-row options,
+ * ink borders, 4px radius on the interactive option, mono throughout. */
+
 .selectorContainer {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-none);
+  padding: 16px;
+  font-family: var(--font-mono);
 }
 
 .selectorLabel {
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.selectorLabel::before {
+  content: '[+] ';
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
+/* list-row: canvas bg, body text, 8px vertical rhythm. */
 .radioOption {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.75rem;
-  background: #0a0a0a;
-  border: 2px solid #333;
-  border-radius: 4px;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s;
+  position: relative;
 }
 
 .radioOption:hover:not(.disabled) {
-  border-color: #00ff8844;
-  background: #1a1a1a;
+  border-color: var(--hairline-strong);
+  background: var(--surface-soft);
 }
 
 .radioOption.disabled {
-  opacity: 0.5;
+  background: var(--surface-card);
+  color: var(--ash);
   cursor: not-allowed;
 }
 
-.radioOption input[type="radio"] {
-  display: none;
+/* Visually hidden but keyboard/screen-reader accessible. */
+.radioOption input[type='radio'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.radioOption input[type="radio"]:checked + .radioLabel {
-  color: #00ff88;
+.radioOption input[type='radio']:checked + .radioLabel {
+  color: var(--ink);
+  font-weight: 700;
 }
 
-.radioOption:has(input[type="radio"]:checked) {
-  border-color: #00ff88;
-  background: #00ff8811;
+.radioOption input[type='radio']:focus-visible + .radioLabel {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.radioOption:has(input[type='radio']:checked) {
+  border-color: var(--ink);
+  background: var(--surface-soft);
+}
+
+/* Fallback for browsers without :has() support. */
+@supports not selector(:has(*)) {
+  .radioOption input[type='radio']:checked + .radioLabel {
+    font-weight: 700;
+  }
 }
 
 .radioLabel {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #e0e0e0;
-  transition: color 0.2s;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--body);
 }
 
 .radioIcon {
-  font-size: 1.25rem;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--mute);
 }
 
 .comingSoon {
   margin-left: auto;
-  font-size: 0.7rem;
-  padding: 0.125rem 0.375rem;
-  background: #ffaa0044;
-  color: #ffaa00;
-  border-radius: 3px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  padding: 2px 8px;
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
+  border-radius: var(--radius-sm);
 }
 
 .radioDescription {
-  font-size: 0.75rem;
-  color: #888;
-  margin-left: 2rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--mute);
+  margin-left: 32px;
 }
 
+/* Caution callout: surface-soft fill, warning rule. */
 .notice {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background: #2a2a1a;
-  border-left: 3px solid #ffaa00;
-  font-size: 0.75rem;
-  color: #aaa;
-  line-height: 1.4;
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--surface-soft);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  color: var(--body);
 }
 
 .notice strong {
-  color: #ffaa00;
+  color: var(--ink);
 }

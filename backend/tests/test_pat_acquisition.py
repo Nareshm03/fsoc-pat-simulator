@@ -4,7 +4,6 @@ Tests for PAT acquisition, tracking, and lock behavior.
 import pytest
 import sys
 import os
-import asyncio
 import math
 
 # Add parent directory to path
@@ -417,7 +416,7 @@ class TestIntegratedAcquisition:
                 time_locked += dt
         
         # Assertions
-        print(f"\n=== PAT Acquisition Test Results (Stationary Target) ===")
+        print("\n=== PAT Acquisition Test Results (Stationary Target) ===")
         print(f"Target position: az={target_az_deg}°, el={target_el_deg}°")
         print(f"First detection time: {acquisition_time:.2f}s" if acquisition_time else "FAILED TO DETECT")
         print(f"Lock acquisition time (START→LOCKED): {lock_time:.2f}s" if lock_time else "FAILED TO LOCK")
@@ -570,7 +569,7 @@ class TestIntegratedAcquisition:
                 time_locked += dt
         
         # Assertions
-        print(f"\n=== PAT Acquisition Test Results (Moving Target, IDEAL) ===")
+        print("\n=== PAT Acquisition Test Results (Moving Target, IDEAL) ===")
         print(f"First detection time: {acquisition_time:.2f}s" if acquisition_time else "FAILED TO DETECT")
         print(f"Lock acquisition time (START→LOCKED): {lock_time:.2f}s" if lock_time else "FAILED TO LOCK")
         print(f"Min error: {min_error:.2f}px")
@@ -589,7 +588,7 @@ class TestIntegratedAcquisition:
             assert lock_time < 10.0, f"Lock acquisition too slow: {lock_time:.2f}s"
             assert time_locked > 0.5, f"Lock retention too short: {time_locked:.2f}s"
         else:
-            print(f"⚠ LOCK not achieved (target moving too fast - tracking only)")
+            print("⚠ LOCK not achieved (target moving too fast - tracking only)")
             # For moving target, at least verify we achieve FINE_TRACK
             assert 'FINE_TRACK' in states or 'LOCKED' in states, "Failed to achieve at least FINE_TRACK"
         

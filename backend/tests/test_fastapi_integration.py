@@ -2,9 +2,7 @@
 Integration tests for FastAPI backend with existing simulation modules.
 """
 import pytest
-import asyncio
 from fastapi.testclient import TestClient
-from fastapi.websockets import WebSocket
 
 from main import app, SimulationManager
 
@@ -118,7 +116,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_websocket_connection(self):
         """Test WebSocket connection establishes."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         # Initialize manager for testing
@@ -134,7 +132,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_start_command(self):
         """Test start command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         # Initialize manager for testing
@@ -153,7 +151,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_pause_command(self):
         """Test pause command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -174,7 +172,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_resume_command(self):
         """Test resume command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -195,7 +193,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_reset_command(self):
         """Test reset command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -216,7 +214,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_stop_command(self):
         """Test stop command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -234,7 +232,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_invalid_command(self):
         """Test invalid command returns error."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -252,7 +250,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_disturbance_command(self):
         """Test set disturbance command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -274,7 +272,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_invalid_disturbance_name(self):
         """Test invalid disturbance name returns error."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -296,7 +294,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_invalid_disturbance_value(self):
         """Test invalid disturbance value returns error."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:
@@ -326,7 +324,7 @@ class TestWebSocket:
     @pytest.mark.asyncio
     async def test_target_speed_command(self):
         """Test set target speed command."""
-        from main import simulation_manager, SimulationManager
+        from main import SimulationManager
         import main
         
         if main.simulation_manager is None:

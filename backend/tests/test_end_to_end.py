@@ -3,7 +3,6 @@ End-to-end smoke test for complete simulation pipeline.
 Verifies all components work together correctly.
 """
 import pytest
-import asyncio
 import math
 from fastapi.testclient import TestClient
 
@@ -95,7 +94,7 @@ class TestEndToEnd:
         print(f"✓ Target moved {distance_moved:.1f} pixels")
         
         # 4. Camera frame is generated (tested implicitly through detection)
-        print(f"✓ Camera frames generated: 100")
+        print("✓ Camera frames generated: 100")
         
         # 5. Detector is called and detects (should detect in most frames)
         detection_rate = len(detected_positions) / 100
@@ -107,7 +106,7 @@ class TestEndToEnd:
         print(f"✓ Tracking updated: {len(tracking_states)} times")
         
         # 7. PAT state exists (verified through tracking)
-        print(f"✓ PAT pipeline operational")
+        print("✓ PAT pipeline operational")
         
         # 8. Gimbal values exist (tested in manager)
         assert manager.pan_tilt.azimuth is not None
@@ -119,7 +118,7 @@ class TestEndToEnd:
         assert telemetry["type"] == "telemetry"
         assert telemetry["simulation_time"] > 0
         assert telemetry["frame"] > 0
-        print(f"✓ Telemetry generated")
+        print("✓ Telemetry generated")
         
         # 10. No NaN or infinity values
         assert not math.isnan(manager.simulation_time)
@@ -129,7 +128,7 @@ class TestEndToEnd:
         if manager.detected:
             assert not math.isnan(manager.detected_x)
             assert not math.isnan(manager.detected_y)
-        print(f"✓ No NaN or infinity values detected")
+        print("✓ No NaN or infinity values detected")
         
         print("\n✅ END-TO-END TEST PASSED: All 100 ticks completed successfully")
     
@@ -137,30 +136,40 @@ class TestEndToEnd:
     async def test_websocket_receives_telemetry(self):
         """Test that WebSocket receives changing telemetry."""
         import main
-        
+
         # Initialize simulation_manager for TestClient
         main.simulation_manager = SimulationManager()
-        
+
         client = TestClient(app)
-        
+
         with client.websocket_connect("/ws/simulation") as websocket:
             # Start simulation
             websocket.send_json({"command": "start"})
             ack = websocket.receive_json()
             assert ack["type"] == "ack"
-            
+
             # Receive several telemetry messages
+            # NOTE: starlette>=0.37 WebSocketTestSession.receive_json()
+            # takes no timeout kwarg (signature is receive_json(mode)).
+            # The old timeout=2.0 kwarg raised TypeError which was swallowed
+            # by the bare except -> 0 messages -> false failure.
+            # Blocking receive is fine: sim broadcasts telemetry @30Hz.
             telemetry_messages = []
             for _ in range(10):
                 try:
-                    msg = websocket.receive_json(timeout=2.0)
+                    msg = websocket.receive_json()
                     if msg["type"] == "telemetry":
                         telemetry_messages.append(msg)
-                except:
+                        if len(telemetry_messages) >= 2:
+                            break
+                except Exception:
                     break
-            
+
             # Stop simulation
-            websocket.send_json({"command": "stop"})
+            try:
+                websocket.send_json({"command": "stop"})
+            except Exception:
+                pass
             
             # Verify we received telemetry
             assert len(telemetry_messages) > 0
@@ -240,5 +249,4 @@ class TestEndToEnd:
 
 if __name__ == "__main__":
     # Run the main test
-    import sys
     pytest.main([__file__, "-v", "-s"])

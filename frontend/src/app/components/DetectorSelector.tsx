@@ -6,12 +6,16 @@ interface DetectorSelectorProps {
   selectedDetector: 'classical' | 'yolo';
   onDetectorChange: (detector: 'classical' | 'yolo') => void;
   yoloAvailable?: boolean;
+  /** YOLO pipeline filling (model load + first observations); tag only,
+   *  switching away stays enabled as the escape hatch. */
+  yoloWarming?: boolean;
 }
 
 export default function DetectorSelector({
   selectedDetector,
   onDetectorChange,
-  yoloAvailable = false
+  yoloAvailable = false,
+  yoloWarming = false
 }: DetectorSelectorProps) {
   return (
     <div className={styles.selectorContainer}>
@@ -26,7 +30,7 @@ export default function DetectorSelector({
             onChange={() => onDetectorChange('classical')}
           />
           <span className={styles.radioLabel}>
-            <span className={styles.radioIcon}>👁</span>
+            <span className={styles.radioIcon}>[+]</span>
             Classical CV
           </span>
           <span className={styles.radioDescription}>
@@ -34,9 +38,9 @@ export default function DetectorSelector({
           </span>
         </label>
 
-        <label 
+        <label
           className={`${styles.radioOption} ${!yoloAvailable ? styles.disabled : ''}`}
-          title={!yoloAvailable ? 'YOLO detector not yet implemented' : ''}
+          title={!yoloAvailable ? 'YOLO detector unavailable (backend offline or model missing)' : ''}
         >
           <input
             type="radio"
@@ -47,20 +51,24 @@ export default function DetectorSelector({
             disabled={!yoloAvailable}
           />
           <span className={styles.radioLabel}>
-            <span className={styles.radioIcon}>🤖</span>
+            <span className={styles.radioIcon}>[+]</span>
             YOLO
-            {!yoloAvailable && <span className={styles.comingSoon}>Coming Soon</span>}
+            {!yoloAvailable && <span className={styles.comingSoon}>Unavailable</span>}
+            {yoloAvailable && yoloWarming && (
+              <span className={styles.comingSoon} role="status">Warming…</span>
+            )}
           </span>
           <span className={styles.radioDescription}>
-            Deep learning-based detection (YOLOv8)
+            Deep learning-based detection (YOLO11n)
           </span>
         </label>
       </div>
 
       {!yoloAvailable && (
         <div className={styles.notice}>
-          <strong>Note:</strong> Implement YOLO only after the classical detector works.
-          This allows for experimental comparison between methods.
+          <strong>Note:</strong> YOLO is currently unavailable. Check that the
+          backend is running and the model file is present, or continue with
+          Classical CV.
         </div>
       )}
     </div>

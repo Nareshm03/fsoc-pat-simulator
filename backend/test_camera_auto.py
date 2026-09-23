@@ -8,7 +8,7 @@ frame = camera.render(640, 360)
 
 print(f"Frame shape: {frame.shape}")
 print(f"Frame type: {frame.dtype}")
-print(f"Beacon should be at (640, 360)")
+print("Beacon should be at (640, 360)")
 
 # Check if the beacon is drawn (white pixel at center)
 if frame[360, 640].sum() > 0:

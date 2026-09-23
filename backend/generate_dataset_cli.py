@@ -2,8 +2,6 @@
 CLI script to generate dataset.
 """
 import sys
-import logging
-from pathlib import Path
 
 # Import existing simulation modules
 from simulation.camera import VirtualCamera
@@ -53,7 +51,7 @@ def main():
     
     # Generate dataset
     print(f"\n{'='*60}")
-    print(f"DATASET GENERATION")
+    print("DATASET GENERATION")
     print(f"{'='*60}")
     print(f"Target: {num_images} images")
     print(f"Splits: {config.train_split*100:.0f}% train, {config.val_split*100:.0f}% val, {config.test_split*100:.0f}% test")
@@ -64,13 +62,13 @@ def main():
     
     # Print summary
     print(f"\n{'='*60}")
-    print(f"GENERATION COMPLETE")
+    print("GENERATION COMPLETE")
     print(f"{'='*60}")
     print(f"Total generated: {stats['total_generated']}")
     print(f"  Train: {stats['train_count']}")
     print(f"  Val:   {stats['val_count']}")
     print(f"  Test:  {stats['test_count']}")
-    print(f"\nQuality:")
+    print("\nQuality:")
     print(f"  Valid samples: {stats.get('valid_samples', 0)}")
     print(f"  Rejected: {stats.get('rejected_samples', 0)}")
     print(f"  Detector failures: {stats.get('detector_failures', 0)}")
@@ -80,11 +78,11 @@ def main():
     validation = stats.get('validation', {})
     if validation:
         print(f"\n{'='*60}")
-        print(f"VALIDATION RESULTS")
+        print("VALIDATION RESULTS")
         print(f"{'='*60}")
         status = "✓ PASSED" if validation.get('passed', False) else "✗ FAILED"
         print(f"Status: {status}")
-        print(f"\nChecks:")
+        print("\nChecks:")
         print(f"  Duplicate filenames: {validation.get('duplicate_count', 0)}")
         print(f"  Split overlaps: {validation.get('split_overlap_count', 0)}")
         print(f"  Invalid labels: {validation.get('invalid_label_count', 0)}")
@@ -92,7 +90,7 @@ def main():
         print(f"  Missing labels: {validation.get('missing_label_count', 0)}")
         print(f"  Missing images: {validation.get('missing_image_count', 0)}")
         
-        print(f"\nPer-Split:")
+        print("\nPer-Split:")
         for split in ['train', 'val', 'test']:
             if split in validation.get('per_split', {}):
                 info = validation['per_split'][split]
@@ -114,7 +112,7 @@ def main():
                 print(f"  ... and {len(validation['warnings']) - 5} more")
     
     print(f"\n{'='*60}")
-    print(f"Files generated:")
+    print("Files generated:")
     print(f"  {config.output_dir}/images/{{train,val,test}}/*.png")
     print(f"  {config.output_dir}/labels/{{train,val,test}}/*.txt")
     print(f"  {config.output_dir}/dataset.yaml")

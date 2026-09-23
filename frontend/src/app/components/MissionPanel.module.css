@@ -1,0 +1,107 @@
+/* Mission panel per DESIGN.md: flat canvas rows, hairline rules,
+ * mono type, semantic ramp reserved for lock/link states. */
+
+.missionDetector {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 2;
+  padding: 2px 8px;
+  background: var(--surface-card);
+  border-radius: var(--radius-sm);
+  color: var(--body);
+}
+
+.runRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* button-primary: ink fill, cream text. */
+.runButton {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--on-primary);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2;
+  font-family: var(--font-mono);
+  padding: 4px 20px;
+  min-height: 36px;
+}
+
+.runButton:active:not(:disabled) {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
+}
+
+.runButton:disabled {
+  background: var(--surface-card);
+  border-color: var(--surface-card);
+  color: var(--ash);
+  cursor: wait;
+}
+
+.reportRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.reportRow span:first-child {
+  color: var(--mute);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 4px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.statusComplete {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+}
+
+.statusTimeout {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
+}
+
+.linkBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.linkNominal {
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: color-mix(in srgb, var(--success) 60%, var(--ink));
+}
+
+.linkMarginal {
+  background: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--warning-active);
+}
+
+.linkOutage {
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger-active);
+}
+
+.linkNodata {
+  background: var(--surface-card);
+  color: var(--mute);
+}
