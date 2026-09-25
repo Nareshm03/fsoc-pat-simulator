@@ -28,7 +28,7 @@ NEXT_PUBLIC_WS_URL=ws://localhost:8000
 - **Real-time Dashboard**: PAT state, beacon position, tracking error, FPS,
   and gimbal angles streamed over WebSocket (auto-reconnect with backoff).
 - **Virtual Camera View**: Beacon marker, crosshair, and error vector over
-  the live MJPEG-style frame stream.
+  the live base64-JPEG frame messages (streamed every 3rd tick).
 - **Disturbance Controls**: Debounced sliders plus presets for turbulence,
   vibration, camera motion, and sensor noise.
 - **Control Buttons**: Start, pause, resume, and reset the simulation.
@@ -39,6 +39,11 @@ NEXT_PUBLIC_WS_URL=ws://localhost:8000
 - **Experiment History**: Run headless experiments (`POST /experiments/run`),
   browse saved runs, inspect exact metrics, compare two runs side-by-side,
   and plot error-vs-time convergence (dependency-free SVG).
+- **Mission Mode**: Run the scripted 7-phase mission (`POST /mission/run`)
+  and inspect the phase timeline plus final PAT/link report.
+- **Pause/Resume**: `pause` acks enter the `PAUSED` state immediately (backend
+  halts telemetry while paused); `resume` acks return to running. Ticks use
+  sim-time `dt`, so pauses and reconnects never corrupt timing.
 
 ## Scripts
 
@@ -55,12 +60,12 @@ npm run lint   # next lint
 
 ```
 Python Backend (FastAPI: REST + WebSocket)
-        ↓  ws://…/ws/simulation (telemetry @30Hz + JPEG frames)
-        ↓  http://…/detector, /experiments/*
+        ↓  ws://…/ws/simulation (telemetry at the nominal 30 Hz target rate + base64-JPEG frames every 3rd tick)
+        ↓  http://…/detector, /experiments/*, /mission/run
 Next.js Frontend (src/app)
         ↓
 React Dashboard Components (page + PresetButtons, DetectorSelector,
-  DatasetGenerator, ExperimentHistory, ConvergenceGraph)
+  DatasetGenerator, ExperimentHistory, ConvergenceGraph, MissionPanel)
 ```
 
 ## Troubleshooting

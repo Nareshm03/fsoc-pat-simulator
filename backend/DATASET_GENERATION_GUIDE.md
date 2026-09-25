@@ -4,19 +4,22 @@
 
 ### Generate a 10-Image Pilot Dataset
 ```bash
-cd D:\Projects\SIH
+cd fsoc-pat-simulator  # repo root
 python backend/generate_dataset_cli.py 10
 ```
+Run generation from the repo root; the CLI writes relative to your shell,
+so from `backend/` the same command writes into `backend/dataset/`.
 
 ### Verify Dataset Integrity
 ```bash
-python backend/verify_dataset.py dataset
+python backend/verify_dataset.py backend/dataset
 ```
 
 ### Run Comprehensive Tests
 ```bash
-python backend/test_dataset_integrity.py dataset
+python backend/test_dataset_integrity.py backend/dataset
 ```
+(Paths are relative to the repo root; from `backend/` use `dataset` instead of `backend/dataset`.)
 
 ## Commands
 
@@ -53,7 +56,7 @@ python backend/verify_dataset.py [dataset_dir]
 ```
 
 **Arguments:**
-- `dataset_dir` (optional): Path to dataset directory (default: 'dataset')
+- `dataset_dir` (optional): Path to dataset directory (default: 'dataset', relative to your shell — from the repo root use `backend/dataset`)
 
 **Checks:**
 - ✓ Unique filenames across all splits
@@ -72,7 +75,7 @@ python backend/test_dataset_integrity.py [dataset_dir]
 ```
 
 **Arguments:**
-- `dataset_dir` (optional): Path to dataset directory (default: 'dataset')
+- `dataset_dir` (optional): Path to dataset directory (default: 'dataset', relative to your shell — from the repo root use `backend/dataset`)
 
 **Tests:**
 1. Globally Unique Sample IDs
@@ -195,7 +198,7 @@ Run verification scripts to confirm:
 - All labels valid
 - Image-label count matches
 
-## Training with YOLOv8
+## Training with YOLO11
 
 Once dataset is generated and validated:
 
@@ -203,7 +206,7 @@ Once dataset is generated and validated:
 from ultralytics import YOLO
 
 # Load pretrained model
-model = YOLO('yolov8n.pt')
+model = YOLO('yolo11n.pt')
 
 # Train on your dataset
 results = model.train(

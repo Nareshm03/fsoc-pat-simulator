@@ -121,13 +121,13 @@ YOLO format: `<class> <x_center> <y_center> <width> <height>`
 
 Example: `0 0.500000 0.450000 0.039063 0.069444`
 
-## Training with YOLOv8
+## Training with YOLO11
 
 ```python
 from ultralytics import YOLO
 
 # Load model
-model = YOLO('yolov8n.pt')
+model = YOLO('yolo11n.pt')
 
 # Train
 results = model.train(

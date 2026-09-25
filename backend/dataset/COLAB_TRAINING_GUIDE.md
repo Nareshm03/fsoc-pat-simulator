@@ -1,4 +1,4 @@
-# YOLO Training on Google Colab - Complete Guide
+# YOLO11 Training on Google Colab - Complete Guide
 
 ## Dataset Ready ✅
 
@@ -16,13 +16,13 @@
 
 ### Option A: ZIP Dataset (Recommended)
 
-**Windows PowerShell:**
+**Windows PowerShell (from the repo root):**
 ```powershell
-cd D:\Projects\SIH\backend
+cd fsoc-pat-simulator\backend
 Compress-Archive -Path dataset\* -DestinationPath dataset.zip -Force
 ```
 
-**File size:** ~200-250 MB (10K images)
+**File size:** ~20 MB (10K images)
 
 **What's included:**
 ```
@@ -84,7 +84,7 @@ drive.mount('/content/drive')
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
-| Model | YOLOv8n | Nano (fastest, smallest) |
+| Model | YOLO11n | Nano (fastest, smallest) |
 | Epochs | 100 | Can increase to 150-200 |
 | Image Size | 640×640 | Standard YOLO size |
 | Batch Size | 16 | Adjust based on GPU memory |
@@ -104,17 +104,17 @@ drive.mount('/content/drive')
 
 Change model size by editing:
 ```python
-model = YOLO('yolov8n.pt')  # Nano (current)
+model = YOLO('yolo11n.pt')  # Nano (current)
 ```
 
 Options:
-- `yolov8n.pt` - Nano (3.2M params, fastest)
-- `yolov8s.pt` - Small (11.2M params, balanced)
-- `yolov8m.pt` - Medium (25.9M params, more accurate)
-- `yolov8l.pt` - Large (43.7M params, high accuracy)
-- `yolov8x.pt` - Extra Large (68.2M params, highest accuracy)
+- `yolo11n.pt` - Nano (fastest)
+- `yolo11s.pt` - Small (balanced)
+- `yolo11m.pt` - Medium (more accurate)
+- `yolo11l.pt` - Large (high accuracy)
+- `yolo11x.pt` - Extra Large (highest accuracy)
 
-**Recommendation:** Start with `yolov8n` for speed, upgrade to `yolov8s` if accuracy insufficient.
+**Recommendation:** Start with `yolo11n` for speed, upgrade to `yolo11s` if accuracy insufficient.
 
 ---
 
@@ -183,8 +183,8 @@ After training completes:
 
 1. Run **Step 9** (Export Model)
 2. Downloads two files:
-   - `best.pt` - PyTorch format (80-90 MB)
-   - `best.onnx` - ONNX format (40-50 MB)
+   - `best.pt` - PyTorch format (~5 MB for YOLO11n)
+   - `best.onnx` - ONNX format
 
 **Which to use:**
 - **best.pt** - Use with Ultralytics library (easiest integration)
@@ -194,10 +194,10 @@ After training completes:
 
 ## Step 7: Integrate into Simulation
 
-### Replace Current Detector
-
-**Current:** Simple centroid-based detector  
-**New:** YOLO-based detector
+YOLO is already integrated in this repo (`backend/simulation/yolo_detector.py`
+as `YOLO11Detector`, switchable live via `set_detector`, inference at
+`imgsz=416` through the newest-frame-only async pipeline). The sketch below
+shows the interface that integration follows:
 
 **Integration code:**
 
@@ -207,8 +207,8 @@ from ultralytics import YOLO
 import numpy as np
 from typing import Optional, Dict
 
-class YOLOBeaconDetector:
-    """YOLO-based beacon detector."""
+class YOLO11Detector:
+    """YOLO11 beacon detector (see backend/simulation/yolo_detector.py)."""
     
     def __init__(self, model_path='best.pt', conf_threshold=0.25):
         """
@@ -259,10 +259,10 @@ class YOLOBeaconDetector:
 
 ```python
 # Replace current detector
-from simulation.yolo_detector import YOLOBeaconDetector
+from simulation.yolo_detector import YOLO11Detector
 
 # In SimulationManager.__init__():
-self.detector = YOLOBeaconDetector(model_path='models/best.pt')
+self.detector = YOLO11Detector(model_path='models/best.pt')
 ```
 
 ### Test Integration
@@ -270,10 +270,10 @@ self.detector = YOLOBeaconDetector(model_path='models/best.pt')
 ```python
 # backend/test_yolo_detector.py
 import cv2
-from simulation.yolo_detector import YOLOBeaconDetector
+from simulation.yolo_detector import YOLO11Detector
 
 # Initialize detector
-detector = YOLOBeaconDetector('models/best.pt')
+detector = YOLO11Detector('models/best.pt')
 
 # Test on sample image
 frame = cv2.imread('dataset/images/test/beacon_008000.png')
@@ -297,7 +297,7 @@ import time
 import numpy as np
 
 # Generate 100 random frames
-detector = YOLOBeaconDetector('best.pt')
+detector = YOLO11Detector('best.pt')
 times = []
 
 for _ in range(100):
@@ -347,14 +347,14 @@ results = model.train(..., batch=8, ...)
 
 **Possible causes:**
 1. Not enough epochs (increase to 150-200)
-2. Model too small (try yolov8s instead of yolov8n)
-3. Learning rate too high (let YOLOv8 auto-tune)
+2. Model too small (try yolo11s instead of yolo11n)
+3. Learning rate too high (let Ultralytics auto-tune)
 4. Data quality issues (check dataset validation)
 
 **Solution:**
 ```python
 # Try larger model
-model = YOLO('yolov8s.pt')
+model = YOLO('yolo11s.pt')
 
 # More epochs
 results = model.train(..., epochs=150, ...)
@@ -389,9 +389,8 @@ results = model.train(..., epochs=150, ...)
 - [ ] Integration code ready
 
 ### Integration
-- [ ] YOLOBeaconDetector class created
-- [ ] main.py updated to use YOLO
-- [ ] Inference speed tested (<10ms)
+- [ ] YOLO11 detector integrated (already in repo: `YOLO11Detector` + live switching)
+- [ ] Inference speed tested
 - [ ] Detection accuracy verified
 
 ---
