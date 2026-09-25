@@ -187,17 +187,6 @@ class PATController:
         el = max(-self.max_rate, min(self.max_rate, el))
         return az, el
 
-    def get_search_info(self) -> dict:
-        """Report deterministic search state (for tests/telemetry)."""
-        t_scan = max(0.0, self._search_time - self.search_hold_s)
-        return {
-            "search_time": self._search_time,
-            "scan_time": t_scan,
-            "scanning": t_scan > 0.0,
-            "az_amplitude_deg": self.search_az_rate * self.search_az_period / 4.0,
-            "el_amplitude_deg": self.search_el_rate * self.search_el_period / 4.0,
-        }
-    
     def compute_command(
         self,
         detected: bool,
@@ -324,25 +313,4 @@ class PATController:
         self.previous_error_y = error_y
         
         return az_rate_cmd, el_rate_cmd
-    
-    def set_gains(self, mode: str, kp: float, ki: float, kd: float):
-        """
-        Set PID gains for a specific mode.
-        
-        Args:
-            mode: Control mode ('acquire', 'track', 'locked')
-            kp: Proportional gain
-            ki: Integral gain
-            kd: Derivative gain
-        """
-        if mode == 'acquire':
-            self.gains_acquire = {'kp': kp, 'ki': ki, 'kd': kd}
-        elif mode == 'track':
-            self.gains_track = {'kp': kp, 'ki': ki, 'kd': kd}
-        elif mode == 'locked':
-            self.gains_locked = {'kp': kp, 'ki': ki, 'kd': kd}
-        else:
-            raise ValueError(f"Unknown mode: {mode}")
-        
-        self.logger.info(f"PID gains for {mode} set: Kp={kp}, Ki={ki}, Kd={kd}")
 
