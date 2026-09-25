@@ -132,6 +132,54 @@ export function detectionRateTone(ratePct: number): DetectionRateTone {
   return 'poor';
 }
 
+export interface LoopRunStatus {
+  running: boolean;
+  paused: boolean;
+}
+
+/**
+ * Optimistic control-plane update, applied ONLY on a matching backend
+ * acknowledgement (pause/resume). Send failures never reach this helper,
+ * so failed commands leave state untouched by construction.
+ *
+ * Pause arms only while the loop is running: a pause ack against an idle
+ * loop is a backend no-op mirrored here as a reference-identical no-op.
+ * Resume always clears paused; against idle that is already the state.
+ * Backend telemetry remains the authority and overwrites both fields on
+ * every tick (see applyTelemetryLoopStatus).
+ */
+export function applyControlAck(
+  prev: LoopRunStatus,
+  command: 'pause' | 'resume'
+): LoopRunStatus {
+  if (command === 'pause') {
+    return prev.running ? { running: prev.running, paused: true } : prev;
+  }
+  return prev.paused ? { running: prev.running, paused: false } : prev;
+}
+
+/**
+ * Telemetry resynchronization: backend truth overwrites optimistic state
+ * on every tick, with the same undefined-tolerant coercion the dashboard
+ * applies when parsing telemetry.
+ */
+export function applyTelemetryLoopStatus(
+  running: boolean | undefined,
+  paused: boolean | undefined
+): LoopRunStatus {
+  return { running: running || false, paused: paused || false };
+}
+
+/** PAUSE is clickable exactly when the loop runs unpaused. */
+export function isPauseEnabled(status: LoopRunStatus): boolean {
+  return status.running && !status.paused;
+}
+
+/** RESUME is clickable exactly when the loop reports paused. */
+export function isResumeEnabled(status: LoopRunStatus): boolean {
+  return status.paused;
+}
+
 export type LinkTone = 'nominal' | 'marginal' | 'outage' | 'nodata';
 
 /** Map a backend link_state to a display tone; anything unknown => nodata. */

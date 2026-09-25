@@ -10,7 +10,10 @@ import MissionPanel from './components/MissionPanel';
 import DatasetGenerator from './components/DatasetGenerator';
 import { API_BASE, WS_BASE } from './config';
 import {
+  applyControlAck,
   bboxToPercent,
+  isPauseEnabled,
+  isResumeEnabled,
   linkStateTone,
   patStateTone,
   resolveYoloPipelinePhase,
@@ -289,6 +292,20 @@ export default function Home() {
             if (data.detector_type === 'yolo' || data.detector_type === 'classical') {
               setSelectedDetector(data.detector_type);
             }
+          }
+          // Optimistic control-plane state: the backend halts telemetry
+          // while paused, so without this the PAUSED badge never renders
+          // and RESUME stays disabled. Telemetry overwrites both fields
+          // on every tick, so this can never disagree for longer than
+          // one tick. All other acks leave run state untouched.
+          if (data.command === 'pause' || data.command === 'resume') {
+            setSimState((prev) => ({
+              ...prev,
+              ...applyControlAck(
+                { running: prev.running, paused: prev.paused },
+                data.command as 'pause' | 'resume'
+              ),
+            }));
           }
           return;
         }
@@ -912,18 +929,18 @@ export default function Home() {
             >
               START
             </button>
-            <button 
-              className={styles.btnPause} 
+            <button
+              className={styles.btnPause}
               onClick={handlePause}
-              disabled={!simState.running || simState.paused}
+              disabled={!isPauseEnabled({ running: simState.running, paused: simState.paused })}
               title="Pause simulation"
             >
               PAUSE
             </button>
-            <button 
-              className={styles.btnResume} 
+            <button
+              className={styles.btnResume}
               onClick={handleResume}
-              disabled={!simState.paused}
+              disabled={!isResumeEnabled({ running: simState.running, paused: simState.paused })}
               title="Resume paused simulation"
             >
               RESUME

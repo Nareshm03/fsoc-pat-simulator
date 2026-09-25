@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  applyControlAck,
+  applyTelemetryLoopStatus,
   bboxToPercent,
   buildCompareRows,
   buildGraphModel,
@@ -9,6 +11,8 @@ import {
   detectorShortLabel,
   detectionRateTone,
   fmt,
+  isPauseEnabled,
+  isResumeEnabled,
   linkStateTone,
   patStateTone,
   recordTime,
@@ -320,5 +324,52 @@ describe('patStateTone', () => {
     expect(patStateTone(null)).toBe('idle');
     expect(patStateTone(undefined)).toBe('idle');
     expect(patStateTone('SOMETHING_ELSE')).toBe('idle');
+  });
+});
+
+describe('pause/resume control-plane state flow', () => {
+  it('successful pause ack pauses a running loop (PAUSE off, RESUME on)', () => {
+    const next = applyControlAck({ running: true, paused: false }, 'pause');
+    expect(next).toEqual({ running: true, paused: true });
+    expect(isPauseEnabled(next)).toBe(false);
+    expect(isResumeEnabled(next)).toBe(true);
+  });
+  it('successful resume ack clears paused without touching running', () => {
+    const next = applyControlAck({ running: true, paused: true }, 'resume');
+    expect(next).toEqual({ running: true, paused: false });
+    expect(isPauseEnabled(next)).toBe(true);
+    expect(isResumeEnabled(next)).toBe(false);
+  });
+  it('failed pause ack leaves an idle loop untouched (same reference)', () => {
+    const prev = { running: false, paused: false };
+    expect(applyControlAck(prev, 'pause')).toBe(prev);
+  });
+  it('failed resume ack leaves an idle loop untouched (same reference)', () => {
+    const prev = { running: false, paused: false };
+    expect(applyControlAck(prev, 'resume')).toBe(prev);
+  });
+  it('telemetry resynchronizes optimistic state when ticks resume', () => {
+    const optimistic = applyControlAck(
+      { running: true, paused: false },
+      'pause'
+    );
+    expect(optimistic.paused).toBe(true);
+    const resynced = applyTelemetryLoopStatus(true, false);
+    expect(resynced).toEqual({ running: true, paused: false });
+    expect(isPauseEnabled(resynced)).toBe(true);
+  });
+  it('reconnect never turns a genuinely paused loop into running', () => {
+    applyControlAck({ running: true, paused: false }, 'pause');
+    // Drop carries no state change; first post-reconnect telemetry wins.
+    const stillPaused = applyTelemetryLoopStatus(true, true);
+    expect(stillPaused).toEqual({ running: true, paused: true });
+    expect(isResumeEnabled(stillPaused)).toBe(true);
+  });
+  it('start/stop/reset flows keep sole ownership of the running flag', () => {
+    // Buttons derive from the same status: idle disables both pause and
+    // resume, so start/stop/reset behavior is unchanged by pause optimism.
+    expect(isPauseEnabled({ running: false, paused: false })).toBe(false);
+    expect(isResumeEnabled({ running: false, paused: false })).toBe(false);
+    expect(isPauseEnabled({ running: true, paused: false })).toBe(true);
   });
 });
